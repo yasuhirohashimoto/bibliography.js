@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', function(e) {
     // Find bibliography.
     const bib_items = {};
     d3.selectAll('[id^=bib-]')
-        .each(function() {
-            const tag = this.id.substr(4);
-            let str = this.innerHTML.replace(/\r?\n|\r/g, ' ');
-            str = str.replace(/\s+/g, ' ');
-            str = str.replace(/^\s/g, '');
-            bib_items[tag] = str;
-        }).remove();
+    .each(function() {
+        const tag = this.id.slice(4);
+        const str = this.innerHTML.replace(/<\/?[^>]+(>|$)/g, '')  // HTMLタグを削除
+                                .replace(/\s+/g, ' ')            // 複数の空白を単一の空白に置き換え
+                                .trim();                         // 文字列の先頭と末尾の空白を削除
+        bib_items[tag] = str;
+    }).remove();
 
     // Find citing positions and insert successive numbers there.
     const index = {};
